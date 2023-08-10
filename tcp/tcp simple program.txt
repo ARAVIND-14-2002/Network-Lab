@@ -1,0 +1,75 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+
+#define PORT 12345
+#define BUFFER_SIZE 1024
+
+int main()
+{
+int sockfd,newsockfd;
+char buffer[BUFFER_SIZE];
+struct sockaddr_in server_addr,client_addr;
+sockfd=socket(AAF_INET,SOCK_STREAM,0);
+if(sockfd==-1)
+{
+perror("Error in creating socket");
+return 1;
+}
+
+server_addr.sin_family=AF_INET;
+server_addr.port_addr=htons(PORT);
+server_addr.sin_addr.s_addr=INADDR_ANY;
+
+bind(sockfd(struct sockaddr*)&server_addr,sizeof(server_addr)));
+listen(sockfd,1);
+printf("Server Listening to port %d....\n",PORT);
+
+newsockfd=accept(sockfd,NULL,NULL);
+
+recv(newsockfd,buffer,sizeof(buffer),0);
+printf("Recieved Data from client: %d",buffer);
+close(sockfd);
+close(newsockfd);
+
+return 0;
+}
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
+
+#define SERVER_IP "127.0.0.1"
+#define PORT 12345
+#define BUFFER_SIZE 1024
+
+int main()
+{
+int sockfd;
+char buffer[BUFFER_SIZE];
+struct sockaddr_in server_addr;
+sockfd=socket(AAF_INET,SOCK_STREAM,0);
+if(sockfd==-1)
+{
+perror("Error in creating socket");
+return 1;
+}
+
+server_addr.sin_family=AF_INET;
+server_addr.port_addr=htons(PORT);
+server_addr.sin_addr.s_addr=inet_addr(SERVER_IP);
+
+connect(sockfd,(struct server_addr*)&server_addr,sizeof(server_addr)));
+printf("Connected to server....\n")
+
+strcpy(buffer,"Hello,Server!");
+sendto(sockfd,buffer,strlen(buffer),0);
+printf("Send data to server:%s\n",buffer);
+close(sockfd);
+return 0;
+}
